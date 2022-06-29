@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="recipeMapper">
+  <resultMap type="Recipe" id="recipeResultMap">
+  	<id column="BOARD_NO" property="boardNo"/>
+  	
+  	<result column="BOARD_TITLE" property="boardTitle"/>
+  	<result column="BOARD_CONTENT" property="boardContent"/>
+  	<result column="CREATE_DATE" property="createDate"/>
+  	<result column="MODIFY_DATE" property="modifyDate"/>
+  	<result column="BOARD_COUNT" property="boardCount"/>
+  	<result column="BOARD_LIKE" property="boardLike"/>
+  	<result column="BOARD_ID" property="boardId"/>
+  	<result column="BOARD_STATUS" property="boardStatus"/>
+  	<result column="BOARD_WRITER" property="boardWriter"/>
+  	<result column="NICKNAME" property="nickName"/>
+  	<result column="MENU_NAME" property="menuName"/>
+  	<result column="INGREDIENT" property="ingredient"/>
+  </resultMap>
+
+  <resultMap type="Image" id="imageResultMap">
+    <id column="FILE_NO" property="fileNo"/>
+  	
+  	<result column="CHANGE_NAME" property="changeName"/>
+  	<result column="ORIGIN_NAME" property="originName"/>
+  	<result column="FILE_PATH" property="filePath"/>
+  	<result column="UPLOAD_DATE" property="uploadDate"/>
+  	<result column="FILE_LEVEL" property="fileLevel"/>
+  	<result column="IMAGE_STATUS" property="imageStatus"/>
+  	<result column="FILE_TYPE" property="fileType"/>
+  	<result column="BOARD_NO" property="boardNo"/> 
+  </resultMap>
+  
+  
+	<!-- Recipe 게시판의 게시물 수 구하기  -->
+	<select id="getListCount" resultType="_int">
+		select count(*)
+		from board
+		where board_status='Y' and board_id= 5
+	</select>
+	
+	<!-- Recipe 게시판의 특정 페이지 게시물 리스트 가져오기 -->
+	<select id="selectRpList" resultMap="recipeResultMap">
+		select *
+		from board
+			join recipe_bd using(board_no)
+			join member on(user_id = board_writer)
+		where board_id = 5 and board_status = 'Y'
+		order by board_no desc
+	</select>
+	
+	<!-- Recipe 게시물의 이미지 가져오기 -->
+  <select id="selectImageList" resultMap="imageResultMap">
+  	select *
+  	from image
+  	where file_type= 0 and file_level = 0 and image_status='Y'
+  </select>	
+  
+  <!-- Recipe 게시물 등록(글쓰기) -->
+  <!-- 1. 게시물 정보 등록 -->
+  <!-- 1.1 BOARD 테이블에 등록 -->
+  <insert id="insertBoard">
+  	insert into board
+   	values(seq_bno.nextval, #{boardTitle}, #{boardContent}, sysdate, sysdate, default, default, 5, default, #{boardWriter})
+  </insert>  
+   
+  <!-- 1.2 RECIPE 테이블에 등록 -->
+   <insert id="insertRecipe">
+	insert into recipe_bd
+	values(seq_bno.currval, #{menuName}, #{ingredient})
+  </insert> 
+  
+  <!-- 2. Image테이블에 Image 객체 정보 등록 -->
+   <insert id="insertImage">
+  	insert into image
+  	values (seq_fno.nextval, #{changeName}, #{originName}, #{filePath}, sysdate, #{fileLevel}, 'Y', #{fileType}, seq_bno.currval)
+  </insert> 
+  
+  
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

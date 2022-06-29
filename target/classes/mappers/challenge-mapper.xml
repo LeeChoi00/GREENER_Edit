@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="challengeMapper">
+  <resultMap type="Challenge" id="challengeResultMap">
+  	<id column="BOARD_NO" property="boardNo"/>
+  	
+  	<result column="BOARD_TITLE" property="boardTitle"/>
+  	<result column="BOARD_CONTENT" property="boardContent"/>
+  	<result column="CREATE_DATE" property="createDate"/>
+  	<result column="MODIFY_DATE" property="modifyDate"/>
+  	<result column="BOARD_COUNT" property="boardCount"/>
+  	<result column="BOARD_LIKE" property="boardLike"/>
+  	<result column="BOARD_ID" property="boardId"/>
+  	<result column="BOARD_STATUS" property="boardStatus"/>
+  	<result column="BOARD_WRITER" property="boardWriter"/>
+  	<result column="NICKNAME" property="nickName"/>
+  	<result column="CHAL_NAME" property="chalName"/>
+  	<result column="CHAL_PLACE" property="chalPlace"/>
+  </resultMap>
+
+  <resultMap type="Image" id="imageResultMap">
+    <id column="FILE_NO" property="fileNo"/>
+  	
+  	<result column="CHANGE_NAME" property="changeName"/>
+  	<result column="ORIGIN_NAME" property="originName"/>
+  	<result column="FILE_PATH" property="filePath"/>
+  	<result column="UPLOAD_DATE" property="uploadDate"/>
+  	<result column="FILE_LEVEL" property="fileLevel"/>
+  	<result column="IMAGE_STATUS" property="imageStatus"/>
+  	<result column="FILE_TYPE" property="fileType"/>
+  	<result column="BOARD_NO" property="boardNo"/> 
+  </resultMap>
+  
+  <!-- Challenge 게시판의 게시물 수 구하기 -->
+  <select id="getListCount" resultType="_int">
+  	select count(*)
+  	from board 		
+  	where board_status='Y' and board_id= 1
+  </select>
+  
+  <!-- Challenge 게시판 특정 페이지 게시물 리스트 가져오기 -->
+  <select id="selectChList" resultMap="challengeResultMap">
+  	select * 
+  	from board
+  		join challenge_bd using(board_no)
+  		join member on(user_id = board_writer)
+  	where board_id = 1 and board_status = 'Y'
+  	order by board_no desc
+  </select>
+  
+  <!-- Challenge 게시물 이미지 썸네일 파일 가져오기 -->
+  <select id="selectImageList" resultMap="imageResultMap">
+  	select *
+  	from image
+  	where file_type= 1 and file_level = 0 and image_status='Y'
+  </select>
+  
+  <!-- 게시물 등록(글쓰기) -->
+  <!-- 1. 게시물 정보 등록 -->
+  <insert id="insertBoard">
+  	insert into board
+   	values(seq_bno.nextval, #{boardTitle}, #{boardContent}, sysdate, sysdate, default, default, 1, default, #{boardWriter})
+  </insert>
+  
+  <insert id="insertChallenge">
+	insert into challenge_bd
+	values(seq_bno.currval, #{chalName}, #{chalPlace})
+  </insert>
+  
+  <!-- 2. Image테이블에 Image 객체 정보 등록 -->
+  <insert id="insertImage">
+  	insert into image
+  	values (seq_fno.nextval, #{changeName}, #{originName}, #{filePath}, sysdate, #{fileLevel}, 'Y', #{fileType}, seq_bno.currval)
+  </insert>
+  
+  
+  <!-- 게시물 상세보기 -->  
+  <!-- 1. 조회수 증가 -->
+  <update id="updateCount">
+  	update board
+  	set board_count = board_count +1
+  	where board_no = #{bNo}
+  </update>
+  
+  <!-- 2. 게시물 정보 받아오기 -->
+  <select id="selectChallengeBoard" resultMap="challengeResultMap">
+	SELECT * 
+	FROM (SELECT BOARD_NO, CHAL_NAME, BOARD_TITLE, CHAL_PLACE, BOARD_CONTENT, B.CREATE_DATE, nickname,
+                B.MODIFY_DATE, BOARD_COUNT, BOARD_LIKE, BOARD_ID, BOARD_STATUS, BOARD_WRITER
+	      FROM BOARD B
+	          LEFT JOIN MEMBER ON (BOARD_WRITER = USER_ID)
+	          LEFT JOIN CHALLENGE_BD USING (BOARD_NO)
+	      WHERE BOARD_STATUS = 'Y' AND BOARD_ID = 1
+	      ORDER BY BOARD_NO DESC) 
+	WHERE BOARD_NO = #{bNo}
+  </select>
+  
+  <!-- 2. 게시물 사진 가져오기 -->
+  <select id="selectFiles" resultMap="imageResultMap">
+  	select *
+  	from image 
+  	where board_no = #{bNo} and image_status = 'Y'
+  	order by file_no
+  </select>
+  
+  <!-- 게시물 수정-->
+  <!-- 1. 사진 파일 수정 -->
+  <!-- 1.1 기존 사진 파일 삭제 -->
+  <delete id="deleteOldFiles">
+  	delete from image
+  	where board_no = #{bNo}
+  </delete>
+  
+  <!-- 1.2 새로운 사진 파일 올리기 -->
+  <insert id="updateNewFiles">
+  	insert into image
+  	values (seq_fno.nextval, #{changeName}, #{originName}, #{filePath}, sysdate, #{fileLevel}, 'Y', #{fileType}, #{boardNo})
+  </insert>  
+  
+  
+  <!-- 2. 게시물 사진 외 정보 수정 -->
+  <!-- 2.1 BOARD 수정 -->
+  <update id="updateBoard">
+  	update board
+  	set board_title = #{boardTitle}, board_content=#{boardContent}, modify_date = sysdate
+  	where board_no = #{boardNo}
+  </update>
+  
+  <!-- 2.2 CHALLENGE_BD 수정 -->
+  <update id="updateChallenge">
+  	update challenge_bd
+  	set chal_name=#{chalName}, chal_place=#{chalPlace}
+  	where board_no = #{boardNo}
+  </update>
+  
+  <!-- 게시물 삭제 -->
+  <update id="deleteChallenge">
+  	update board
+  	set board_status='N'
+  	where board_no=#{bNo}
+  </update>
+  
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

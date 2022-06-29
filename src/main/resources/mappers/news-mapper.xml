@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="newsMapper">
+  <resultMap type="News" id="newsResultMap">
+  	<id column="BOARD_NO" property="boardNo"/>
+  	
+  	<result column="BOARD_TITLE" property="boardTitle"/>
+  	<result column="BOARD_CONTENT" property="boardContent"/>
+  	<result column="CREATE_DATE" property="createDate"/>
+  	<result column="MODIFY_DATE" property="modifyDate"/>
+  	<result column="BOARD_COUNT" property="boardCount"/>
+  	<result column="BOARD_LIKE" property="boardLike"/>
+  	<result column="BOARD_ID" property="boardId"/>
+  	<result column="BOARD_STATUS" property="boardStatus"/>
+  	<result column="BOARD_WRITER" property="boardWriter"/>
+  	<result column="NICKNAME" property="nickName"/>
+  	<result column="NEWS_REFERENCE" property="newsReference"/>
+  	<result column="NEWS_CATEGORY" property="newsCategory"/>
+  </resultMap>
+  
+	<!-- 총 게시물 수 구하기 -->
+	<select id="getListCount"  resultType="_int">
+		select count(*)
+		from board
+		where board_status='Y' and board_id =3
+	</select>
+	
+	<!-- 특정 페이지 게시물 리스트 받아오기 -->
+	<select id="selectList" resultMap="newsResultMap">
+		select *
+		from board
+			join news_bd using(board_no)
+			join member on(user_id = board_writer)
+		where board_status='Y' 
+		order by board_no desc
+	</select>
+	
+	<!-- 게시물 상세보기 -->
+    <!-- 1. 조회수 증가 -->
+    <update id="updateCount">
+    	update board
+    	set board_count = board_count + 1
+    	where board_no = #{bNo}
+    </update>
+  	
+  	<!-- 2. 게시물 정보 가져오기 -->
+	<select id="selectDetail" resultMap="newsResultMap">
+		select * 
+		from board
+			join news_bd using(board_no)
+		where board_status = 'Y' and board_no = #{bNo}
+	</select>
+	
+	<!-- 게시물 추가 -->
+	<insert id="newsInsert">
+	  INSERT ALL 
+	  INTO BOARD 
+	  VALUES(SEQ_BNO.NEXTVAL, #{boardTitle}, #{boardContent}, SYSDATE, SYSDATE, DEFAULT, DEFAULT, 3, DEFAULT, #{boardWriter}) 
+	  INTO news_BD 
+	  VALUES(SEQ_BNO.CURRVAL, #{newsReference}, #{newsCategory}) 
+	  SELECT * FROM DUAL
+	</insert>
+	
+  <!-- 게시물 수정 -->
+  <!-- 1. Board 수정 -->
+  <update id="updateBoard">
+	update board
+	set board_title=#{boardTitle}, board_content=#{boardContent}
+	where board_no = #{boardNo}
+  </update>
+  
+  <!-- 2. Club_bd 수정 -->
+	<update id="updateNews">
+	  update news_bd
+	  set news_reference = #{newsReference}, news_category=#{newsCategory}
+	  where board_no = #{boardNo}	
+	</update>
+	
+	
+  <!-- 게시물 삭제 -->
+  <update id="newsDelete">
+  	update board
+  	set board_status = 'N'
+  	where board_no=#{bNo}
+  </update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

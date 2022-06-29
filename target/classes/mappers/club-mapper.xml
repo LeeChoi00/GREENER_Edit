@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="clubMapper">
+  <resultMap type="Club" id="clubResultMap">
+  	<id column="BOARD_NO" property="boardNo"/>
+  	
+  	<result column="BOARD_TITLE" property="boardTitle"/>
+  	<result column="BOARD_CONTENT" property="boardContent"/>
+  	<result column="CREATE_DATE" property="createDate"/>
+  	<result column="MODIFY_DATE" property="modifyDate"/>
+  	<result column="BOARD_COUNT" property="boardCount"/>
+  	<result column="BOARD_LIKE" property="boardLike"/>
+  	<result column="BOARD_ID" property="boardId"/>
+  	<result column="BOARD_STATUS" property="boardStatus"/>
+  	<result column="BOARD_WRITER" property="boardWriter"/>
+  	<result column="NICKNAME" property="nickName"/>
+  	<result column="ONLINE_YN" property="onlineYn"/>
+  	<result column="GATHER_PERIOD" property="gatherPeriod"/>
+  	<result column="ACCEPTANCE_START" property="acptStart"/>
+  	<result column="ACCEPTANCE_END" property="acptEnd"/>
+  </resultMap>	
+
+
+  <!-- 게시물 수 -->
+  <select id="getListCount" resultType="_int">
+  	select count(*)
+  	from board
+  	where board_id = 2 and board_status = 'Y'
+  </select>
+  
+  <!-- Club 게시판의 게시물 받아오기 -->
+  <select id="selectList" resultMap="clubResultMap">
+  	select *
+  	from board
+  		join club_bd using(board_no)
+  		join member on(user_id = board_writer)
+  	where board_status = 'Y'
+  	order by board_no desc
+  </select>
+  
+  <!-- 게시물 상세보기 -->
+  <!-- 1. 조회수 증가 -->
+  <update id="updateCount">
+  	update board
+  	set board_count = board_count + 1
+  	where board_no = #{bNo}
+  </update>
+  
+  <!-- 2. 게시물 정보 가져오기 -->
+  <select id="selectClub" resultMap="clubResultMap">
+  	select *
+  	from board
+  		join club_bd using(board_no)
+  		join member on(user_id = board_writer)
+  	where board_status = 'Y' and board_no=#{bNo}
+  </select>
+  
+  <!-- 게시물 추가 -->
+  <insert id="insertBoard">
+	  INSERT ALL 
+	  INTO BOARD 
+	  VALUES(SEQ_BNO.NEXTVAL, #{boardTitle}, #{boardContent}, SYSDATE, SYSDATE, DEFAULT, DEFAULT, 2, DEFAULT, #{boardWriter}) 
+	  INTO CLUB_BD 
+	  VALUES(SEQ_BNO.CURRVAL, #{onlineYn}, #{gatherPeriod}, #{acptStart}, #{acptEnd}) SELECT * FROM DUAL
+  </insert>
+  
+  <!-- 게시물 수정 -->
+  <!-- 1. Board 수정 -->
+  <update id="updateBoard">
+	update board
+	set board_title=#{boardTitle}, board_content=#{boardContent}
+	where board_no = #{boardNo}
+  </update>
+  
+  <!-- 2. Club_bd 수정 -->
+	<update id="updateClub">
+	  update club_bd
+	  set online_yn=#{onlineYn}, gather_period=#{gatherPeriod}, acceptance_start=#{acptStart}, acceptance_end=#{acptEnd}
+	  where board_no = #{boardNo}	
+	</update>
+	
+  <!-- 게시물 삭제 -->
+  	<update id="deleteBoard">
+  		update board
+  		set board_status = 'N'
+  		where board_no = #{boardNo}
+  	</update>
+</mapper>

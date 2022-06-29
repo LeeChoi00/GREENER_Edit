@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<!-- null 값 인지  -->
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="semi.edit.greener.member.model.vo.Member" alias="Member"/>
+		<typeAlias type="semi.edit.greener.notice.model.vo.Notice" alias="Notice"/>
+		<typeAlias type="semi.edit.greener.board.challenge.model.vo.Challenge" alias="Challenge"/>
+		<typeAlias type="semi.edit.greener.board.model.vo.Image" alias="Image"/>
+		<typeAlias type="semi.edit.greener.board.club.model.vo.Club" alias="Club"/>
+		<typeAlias type="semi.edit.greener.board.news.model.vo.News" alias="News"/>
+		<typeAlias type="semi.edit.greener.board.recipe.model.vo.Recipe" alias="Recipe"/>
+	</typeAliases>
+
+	<mappers>
+		<mapper resource="mappers/member-mapper.xml"/>
+		<mapper resource="mappers/notice-mapper.xml"/>
+		<mapper resource="mappers/challenge-mapper.xml"/>
+		<mapper resource="mappers/club-mapper.xml"/>
+		<mapper resource="mappers/news-mapper.xml"/>
+		<mapper resource="mappers/recipe-mapper.xml"/>
+	</mappers>
+	
+
+</configuration>

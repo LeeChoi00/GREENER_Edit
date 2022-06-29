@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="noticeMapper">
+  <resultMap type="Notice" id="noticeResultMap">
+  	<id column="NOTICE_NO" property="noticeNo"/>
+  	
+  	<result column="NOTICE_TITLE" property="noticeTitle"/>
+  	<result column="NOTICE_CONTENT" property="noticeContent"/>
+  	<result column="NOTICE_WRITER" property="noticeWriter"/>
+  	<result column="NICKNAME" property="nickName"/>
+  	<result column="NOTICE_COUNT" property="noticeCount"/>
+  	<result column="NOTICE_DATE" property="noticeDate"/>
+  	<result column="NOTICE_STATUS" property="noticeStatus"/>
+  	<result column="FIX" property="fix"/>
+  </resultMap>
+  
+  <!-- 총 게시물 수 구하기 -->
+  <select id="getListCount" resultType="_int">
+  	select count(*)
+  	from notice_bd
+  	where notice_status='Y'
+  </select>
+  
+  <!-- 특정 페이지에 들어갈 게시물 리스트 구하기 -->
+  <select id="selectNoticeList" resultMap="noticeResultMap">
+  	select *
+  	from notice_bd
+  		left join member on(notice_writer=user_id)
+  	where notice_status= 'Y' and fix='N' 
+  	order by notice_no desc
+  </select>
+  
+  <!-- 상단 고정 게시물 리스트 구하기 -->
+  <select id="selectFixedList" resultMap="noticeResultMap">
+  	select *
+  	from notice_bd
+  		left join member on(notice_writer=user_id)
+    where notice_status='Y' and fix='Y'
+  	order by notice_no desc
+  </select>
+  
+  <!-- 게시물 상세보기 -->
+  <select id="selectNotice" resultMap="noticeResultMap">
+  	select *
+  	from notice_bd
+  		left join member on(notice_writer=user_id)
+  	where notice_no = #{no}
+  </select>
+  
+  <!-- 게시물 수정 -->
+  <update id="updateNotice">
+  	update notice_bd
+  	set notice_title=#{noticeTitle}, notice_date=sysdate, notice_content=#{noticeContent}, fix=#{fix}
+  	where notice_no = #{noticeNo}
+  </update>
+  
+  <!-- 게시물 추가(글쓰기) -->
+  <update id="insertNotice">
+  	insert into notice_bd
+  	values(seq_nno.nextval, #{noticeTitle}, #{noticeContent}, #{noticeWriter}, default, sysdate, default, #{fix})
+  </update>
+  
+  <!-- 게시물 삭제 -->
+  <update id="deleteNotice">
+  	update notice_bd
+  	set notice_status='N'
+  	where notice_no = #{no}
+  </update>
+</mapper>
