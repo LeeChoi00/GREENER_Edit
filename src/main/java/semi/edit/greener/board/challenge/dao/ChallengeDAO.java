@@ -74,7 +74,7 @@ public class ChallengeDAO {
 	// 게시물 상세보기
 	public Challenge selectChallengeBoard(SqlSessionTemplate sqlSession, int bNo) {
 		int cResult = sqlSession.update("challengeMapper.updateCount", bNo);
-		Challenge chResult = null;
+		Challenge chResult = null;      ///////////////////??????????????????????????????
 		if(cResult>0) {
 			chResult = sqlSession.selectOne("challengeMapper.selectChallengeBoard", bNo);
 		}
@@ -111,7 +111,18 @@ public class ChallengeDAO {
 	// 게시물 삭제
 
 	public int deleteChellenge(SqlSessionTemplate sqlSession, int bNo) {
-		return sqlSession.update("challengeMapper.deleteChallenge", bNo);
+		int deleteBoard = sqlSession.update("challengeMapper.deleteChallenge", bNo);
+		int deleteImage = sqlSession.update("challengeMapper.deleteOldFiles", bNo);
+		return deleteBoard+deleteImage;
+	}
+	
+	// 검색
+	public int getSearchListCount(SqlSessionTemplate sqlSession, String keyword) {
+		return sqlSession.selectOne("challengeMapper.getSearchListCount", keyword);
+	}
+
+	public ArrayList<Challenge> searchList(SqlSessionTemplate sqlSession, String keyword) {
+		return (ArrayList)sqlSession.selectList("challengeMapper.searchList", keyword);
 	}
 
 

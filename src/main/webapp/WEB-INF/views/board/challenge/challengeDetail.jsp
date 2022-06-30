@@ -182,7 +182,7 @@
 		}
 		
       function popUp(){
-         window.open('reportForm.bo','ReportForm','width=450, height=500');
+         window.open('reportForm.rt?reportBNo='+<%= chBoard.getBoardNo()%>,'ReportForm','width=450, height=500');
       }
       
 </script>

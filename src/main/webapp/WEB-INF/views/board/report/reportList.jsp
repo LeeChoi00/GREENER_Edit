@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.util.ArrayList, board.model.vo.*"%>
+    pageEncoding="UTF-8" import="java.util.ArrayList, semi.edit.greener.board.model.vo.*,
+    semi.edit.greener.board.report.model.vo.*"%>
 <%
-	ArrayList<ReportBoard> list = (ArrayList<ReportBoard>)request.getAttribute("list");
-	Page p = (Page)request.getAttribute("p");
+	ArrayList<Report> list = (ArrayList<Report>)request.getAttribute("list");
+	BoardPageInfo p = (BoardPageInfo)request.getAttribute("pi");
 %>
 <!DOCTYPE html>
 <html>
@@ -14,7 +15,7 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<%@ include file = "../common/Navbar.jsp" %>
+<%@ include file = "/WEB-INF/views/common/Navbar.jsp" %>
 <section class="ftco-section">
 	<div class="container">
 		<div class="row justify-content-center">
@@ -41,7 +42,7 @@
 					      <td colspan="5">조회된 리스트가 없습니다.</td>
 					    </tr>
 					  <% } else { %>
-					  		<% for(ReportBoard r : list){ %>
+					  		<% for(Report r : list){ %>
 							    <tr class="alert" role="alert">
 							      <th scope="row" name="rNo"><%= r.getReportNo() %></th>
 							      <td><%= r.getReportDate() %></td>
@@ -65,7 +66,7 @@
 				<nav aria-label="Page navigation example">
 				  <ul class="pagination justify-content-center">
 				    <li class="page-item">
-				      <a class="page-link" href="<%= request.getContextPath() %>/reportlist.bo?currentPage=1" aria-label="Previous">
+				      <a class="page-link" href="<%= request.getContextPath() %>/list.rt?currentPage=1" aria-label="Previous">
 				        <span aria-hidden="true">&laquo;</span>
 				      </a>
 				    </li>
@@ -73,12 +74,12 @@
 				    	<% if(pi == p.getCurrentPage()){ %>
 				    		<li class="page-item"><button class="page-link" id="choosen" disabled><%= pi %></button></li>
 				    	<% } else { %>
-						    <li class="page-item"><button class="page-link" id="numBtn" onclick="location.href='<%= request.getContextPath() %>/reportlist.bo?currentPage=<%= pi %>'"><%= pi %></button></li>
+						    <li class="page-item"><button class="page-link" id="numBtn" onclick="location.href='<%= request.getContextPath() %>/list.rt?currentPage=<%= pi %>'"><%= pi %></button></li>
 <%-- 				    <li class="page-item"><button class="page-link" onclick="location.href='<%= request.getContextPath() %>/reportlist.bo?currentPage=<%= p.getCurrentPage() +1 %>'" id="afterBtn">&gt;</button></li> --%>
 				    	<% } %>
 				    <%} %>
 				    <li class="page-item">
-				      <a class="page-link" href="<%= request.getContextPath() %>/reportlist.bo?currentPage=<%= p.getMaxPage() %>" aria-label="Next">
+				      <a class="page-link" href="<%= request.getContextPath() %>/list.rt?currentPage=<%= p.getMaxPage() %>" aria-label="Next">
 				        <span aria-hidden="true">&raquo;</span>
 				      </a>
 				    </li>
@@ -92,14 +93,14 @@
 		$(function(){
 			$('#listArea td').click(function(){
 				var rNo = $(this).parent().children().eq(0).text();
-				location.href = '<%= request.getContextPath() %>/detail.report?rNo=' + rNo;
+				location.href = '<%= request.getContextPath() %>/detail.rt?rNo=' + rNo;
 			}).mouseenter(function(){
 				$(this).parent().children().css({'cursor':'pointer'});
 			});
 		});
 </script>
 
-<%@ include file = "../common/FooterTopBtn.jsp" %>
+<%@ include file = "/WEB-INF/views/common/FooterTopBtn.jsp" %>
 <script src="js/jquery.min.js"></script>
 <script src="js/popper.js"></script>
 <script src="js/bootstrap.min.js"></script>

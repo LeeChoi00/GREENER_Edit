@@ -336,17 +336,52 @@ public class ChallengeController {
 		}
 	}
 	
-	// 6. 게시물 삭제
+	// 6. 게시물 삭제  
 	@RequestMapping("delete.ch")
 	public String deleteChallenge(@RequestParam("bNo") int bNo, Model model) {
-		// board 상태 N으로 수정 
-		int result = chService.deleteChallenge(bNo);
+		// board와 image 상태 N으로 수정 
+		int bResult = chService.deleteChallenge(bNo);
 		
-		if(result<2) {
-			model.addAttribute("msg", "게시물 수정에 실패했습니다.");
+		if(bResult<2) {
+			model.addAttribute("msg", "게시물 삭제에 실패했습니다.");
 			return "../../common/errorPage";
 		} else {
-			return "redirect:list.ch";				
+			return "redirect:list.ch";
+		}				
+	}
+	
+	// 7. Challenge 게시물 검색
+	@RequestMapping("search.ch")
+	public String searchChallenge(@RequestParam("search") String keyword,
+			@RequestParam(value="page", required=false) Integer page, Model model) {
+		// 페이징
+		// 1. 총 게시물 수 가져오기
+		int listCount = chService.getSearchListCount(keyword);
+
+		// 2. 현재 페이지 구하기
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		// 3. 페이징 계산
+		BoardPageInfo pi = new Pagination().getBoardPageInfo(currentPage, listCount);	
+		
+		// 4. 해당 게시물 목록 가져오기
+		ArrayList<Challenge> chList = chService.searchList(keyword);
+		
+		// 5. 해당 게시물 썸네일 이미지 가져오기
+		ArrayList<Image> imageList = chService.selectImageList();
+	
+		
+		if(chList !=null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("chList", chList);
+			model.addAttribute("imageList", imageList);
+			return "searchCList";
+		} else {
+			model.addAttribute("msg", "게시물 수정에 실패했습니다.");
+			return "../../common/errorPage";			
 		}
 	}
 

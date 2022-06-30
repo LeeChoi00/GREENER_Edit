@@ -95,7 +95,7 @@
    <!-- Page Content -->
    <div class="container">
       <!-- 검색창 -->
-      <form class="d-flex" method="post" onsubmit="return checkForm();" action="<%= request.getContextPath() %>/search.chal">
+      <form class="d-flex" method="post" onsubmit="return checkForm();" action="<%= request.getContextPath() %>/search.ch">
          <input class="form-control me-2" id="search" name="search" type="search" placeholder="Search" aria-label="Search">
          <button class="btn btn-outline-success" type="submit">Search</button>
       </form>

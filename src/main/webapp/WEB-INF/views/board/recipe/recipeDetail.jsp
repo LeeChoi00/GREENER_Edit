@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.util.ArrayList, semi.edit.greener.board.recipe.model.vo.*, 
    semi.edit.greener.member.model.vo.*, semi.edit.greener.notice.model.vo.*,
-   semi.edit.greener.board.model.vo.*"%>
+   semi.edit.greener.board.model.vo.*, semi.edit.greener.board.comment.model.vo.*"%>
 <%
-   Recipe r = (Recipe)request.getAttribute("r");
+   Recipe r = (Recipe)request.getAttribute("recipe");
    ArrayList<Image> imgList = (ArrayList<Image>)request.getAttribute("imgList");
    ArrayList<Comment> comList = (ArrayList<Comment>)request.getAttribute("comList");
    Member loginUser = (Member)session.getAttribute("loginUser");
@@ -139,14 +139,14 @@
       
       $(function(){
          $('#addComment').click(function(){
-            var writer = '<%= loginUser.getUserId() %>';
-            var bNo = <%= r.getBoardNo() %>;
-            var content = $('#commentContent').val();
+            var commentWriter = '<%= loginUser.getUserId() %>';
+            var boardNo = <%= r.getBoardNo() %>;
+            var commentContent = $('#commentContent').val();
             
             $.ajax({
-               url: "insertComment.bo",
+               url: "insertComment.cm",
                type: 'post',
-               data: {writer:writer, content:content, bNo:bNo},
+               data: {commentWriter:commentWriter, commentContent:commentContent, boardNo:boardNo},
                success: function(data){
                   $commentTable = $('#contentSelectTable');
                   $commentTable.html('');      //---1
@@ -154,7 +154,7 @@
                   for(var i in data) {
                      var $tr = $('<tr>');
                      var $writerTd = $('<td>').text(data[i].nickName).css('width', '100px');
-                     var $contentTd = $('<td>').text(data[i].commentContent).css('width', '400px');
+                     var $contentTd = $('<td>').text(data[i].commentContent).css('width', '300px');
                      var $dateTd = $('<td>').text(data[i].commentDate).css('width', '200px');
                      
                      $tr.append($writerTd);

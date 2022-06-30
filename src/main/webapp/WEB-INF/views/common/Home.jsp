@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="semi.edit.greener.member.model.vo.Member" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 	Member loginUser = (Member)session.getAttribute("loginUser");
 %>
@@ -97,7 +98,7 @@
 	            <% if(loginUser.getNickName().equals("관리자")){ %>
 	             <li class="nav-item">
 	                <strong>
-	             		<a class="nav-link" href="<%= request.getContextPath()%>/reportlist.bo" style="font-family: 'Kalam', cursive; color: orange;">Report</a>
+	             		<a class="nav-link" href="<%= request.getContextPath()%>/list.rt" style="font-family: 'Kalam', cursive; color: orange;">Report</a>
 					</strong>
 	             </li>
 	             <% } %>

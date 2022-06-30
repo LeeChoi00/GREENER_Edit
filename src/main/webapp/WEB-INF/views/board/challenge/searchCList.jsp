@@ -1,13 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="member.model.vo.*, board.model.vo.*, java.util.ArrayList"%>
+    pageEncoding="UTF-8" import="semi.edit.greener.member.model.vo.*, 
+    semi.edit.greener.board.model.vo.*, semi.edit.greener.board.challenge.model.vo.*,
+    java.util.ArrayList"%>
 <%
-	ArrayList<ChallengeBoard> list = (ArrayList<ChallengeBoard>)request.getAttribute("cList");
-	Page p = (Page)request.getAttribute("p");
-	System.out.println(p);
+	ArrayList<Challenge> list = (ArrayList<Challenge>)request.getAttribute("chList");
+	BoardPageInfo p = (BoardPageInfo)request.getAttribute("pi");
+	/* System.out.println(p); */
 	ArrayList<Image> imageList = (ArrayList<Image>)request.getAttribute("imageList");
-	for(int i = 0; i < list.size(); i++){
+/* 	for(int i = 0; i < list.size(); i++){
 		System.out.println(list.get(i));
-	}
+	} */
 %>
 <!DOCTYPE html>
 <html>
@@ -38,7 +40,7 @@
 </style>
 </head>
 <body>
-<%@ include file = "../common/Navbar.jsp" %>
+<%@ include file = "/WEB-INF/views/common/Navbar.jsp" %>
 <!-- 내용 -->
 <div class="container">
   <div class="row">
@@ -126,7 +128,7 @@
 			  </div>
 		  <%} else {%>
 	  	  	<% for(int i = 0; i < list.size(); i++){ %>
-	  			<% ChallengeBoard cb = list.get(i); %>
+	  			<% Challenge cb = list.get(i); %>
 				    <div class="col-lg-4 col-md-4 col-6">
 			      	<a class="d-block mb-4 h-100">
 		      	
@@ -136,7 +138,7 @@
 							    <% for(int j = 0; j < imageList.size(); j++){ 
 							    	 Image img = imageList.get(j); 
 							    	 if(cb.getBoardNo() == img.getBoardNo()){ %>
-								        <img class="img-fluid img-thumbnail" src="<%= request.getContextPath() %>/challenge_image_files/<%= img.getChangeName() %>" alt="챌린지 이미지" width="200" height="200">
+								        <img class="img-fluid img-thumbnail" src="<%= request.getContextPath() %>/resources/challenge_images/<%= img.getChangeName() %>" alt="챌린지 이미지" width="200" height="200">
 							     	<% } %>
 							   	<% } %>
 							</td>
@@ -213,7 +215,7 @@
 </div>
 
 <br>
-<%@ include file = "../common/FooterTopBtn.jsp" %>
+<%@ include file = "/WEB-INF/views/common/FooterTopBtn.jsp" %>
 <script>
 		$(function(){
 			$('#thumbnail td').mouseenter(function(){
@@ -225,7 +227,7 @@
 				<% } else { %>
 						var bNo = $(this).parent().parent().children().children().children().children().eq(0).val();
 						console.log(bNo);
-						location.href="<%= request.getContextPath() %>/chalDetail.bo?bNo=" + bNo;
+						location.href="<%= request.getContextPath() %>/detail.ch?bNo=" + bNo;
 				<% } %>
 			});
 		});

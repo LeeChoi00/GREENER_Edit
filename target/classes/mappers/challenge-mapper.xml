@@ -107,7 +107,8 @@
   <!-- 1. 사진 파일 수정 -->
   <!-- 1.1 기존 사진 파일 삭제 -->
   <delete id="deleteOldFiles">
-  	delete from image
+  	update image
+  	set image_status = 'N'
   	where board_no = #{bNo}
   </delete>
   
@@ -140,8 +141,28 @@
   	where board_no=#{bNo}
   </update>
   
+  
+  <!-- 검색 -->
+  <!-- 해당 목록 갯수 -->
+  <select id="getSearchListCount" resultType="_int">
+  	select count(*)
+  	from board
+  		join challenge_bd using(board_no)
+  		join member on (user_id = board_writer)
+  	where (board_title like '%'||#{keyword}||'%' or chal_name like '%'||#{keyword}||'%' or chal_place like '%'||#{keyword}||'%') 
+  	and board_status = 'Y'
+  </select>
+  
+  <!-- 검색 목록 가져오기 -->
+  <select id="searchList" resultMap="challengeResultMap">
+  	select *
+  	from board
+  		join challenge_bd using(board_no)
+  		join member on (user_id = board_writer)
+  	where (board_title like '%'||#{keyword}||'%' or chal_name like '%'||#{keyword}||'%' or chal_place like '%'||#{keyword}||'%' or board_content like '%'||#{keyword}||'%')
+  	and board_status='Y'
+  </select>
 </mapper>
-
 
 
 

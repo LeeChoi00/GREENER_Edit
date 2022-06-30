@@ -22,8 +22,8 @@
 						<th>제목</th>
 						
 						<td colspan="3">
-							<input type="text" name ="boNewTitle" size="50" value="<%= club.getBoardTitle() %>" >
-							<input type="hidden" name ="boNo" value="<%= club.getBoardNo() %>">
+							<input type="text" name ="boardTitle" size="50" value="<%= club.getBoardTitle() %>" >
+							<input type="hidden" name ="boardNo" value="<%= club.getBoardNo() %>">
 						</td>				
 					</tr>
 					<tr>
@@ -61,7 +61,7 @@
 					</tr>
 					<tr>
 						<td colspan="4">
-							<textarea name ="boNewContent" cols="60" rows="15" style="resize:none;"><%= club.getBoardContent() %></textarea>
+							<textarea name ="boardContent" cols="60" rows="15" style="resize:none;"><%= club.getBoardContent() %></textarea>
 						</td>
 					</tr>
 				</table>

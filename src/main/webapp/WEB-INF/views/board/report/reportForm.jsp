@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
 <%
    String msg = (String)request.getAttribute("msg");
 %>
@@ -17,7 +18,7 @@
 <body style="font-family: 'Noto Sans KR', sans-serif; background-color: rgb(249,249,249);">
 <%if(msg == null){ %>
 <article>
-   <form name="form" id="form" method="post" onsubmit="return CheckForm();" action="<%=request.getContextPath()%>/insertReport.bo">
+   <form name="form" id="form" method="post" onsubmit="return CheckForm();" action="<%=request.getContextPath()%>/insertReport.rt">
       <div class="container" role="main" style="background-color: white;">
       <br>
       <h4 style="text-align: center;"><strong>신고하기</strong></h4>
@@ -30,11 +31,11 @@
         <option value="3">욕설, 비방, 차별, 혐오</option>
         <option value="4">기타</option>
       </select>
-      <input type="hidden" name="bNo" id="bNo" value="">   
+      <input type="hidden" name="reportBNo" id="bNo" value=${reportBNo }>   
       <br>
       <div class="mb-3">
          <label for="content">신고내용</label>
-         <textarea class="form-control" rows="5" name="content" id="content" style="resize: none;" placeholder="신고 내용을 입력해 주세요" ></textarea>
+         <textarea class="form-control" rows="5" name="reportContent" id="content" style="resize: none;" placeholder="신고 내용을 입력해 주세요" ></textarea>
       </div>
       <br>
       </div>
@@ -62,7 +63,7 @@
 <%} %>
 
 <script>
-		$('#bNo').val(opener.document.getElementById('bNo').value);
+	/* 	$('#bNo').val(opener.document.getElementById('bNo').value); */
 		
 		function CheckForm(){
 			if($('#reportType option:selected').val() == "selected"){

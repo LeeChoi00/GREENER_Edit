@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import semi.edit.greener.board.model.vo.BoardPageInfo;
+import semi.edit.greener.board.comment.model.vo.Comment;
 import semi.edit.greener.board.model.vo.Image;
 import semi.edit.greener.board.recipe.model.service.RecipeService;
 import semi.edit.greener.board.recipe.model.vo.Recipe;
@@ -157,11 +158,29 @@ public class RecipeController {
 		return img;
 	}
 
-	// 게시물 상세보기 => semi 원본에 없음;;;;
+	// 3. 게시물 상세보기 
 	@RequestMapping("detail.rp")
-	public String recipeDetail() {
-		return null;
+	public String recipeDetail(@RequestParam("bNo") int bNo, Model model) {
 		
+		// 3.1 해당 Recipe 게시물 가져오기
+		Recipe recipe = rpService.selectRecipe(bNo);
+		
+		// 3.2 해당 Recipe 게시물의 사진 정보 가져오기
+		ArrayList<Image> imgList = rpService.selectBoardImages(bNo);
+		
+		// 3.3 해당 Recipe 게시물의 댓글 정보 가져오기
+		ArrayList<Comment> comList = rpService.selectBoardComments(bNo);
+		
+		if(recipe != null) {
+			model.addAttribute("recipe", recipe);
+			model.addAttribute("imgList", imgList);
+			model.addAttribute("comList", comList);
+			
+			return "recipeDetail";
+		} else {
+			model.addAttribute("msg", "Recipe 게시물 상세보기에 실패했습니다.");
+			return "../../common/errorPage";			
+		}
 	}
 }
 

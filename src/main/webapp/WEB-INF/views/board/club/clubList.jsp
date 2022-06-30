@@ -195,7 +195,7 @@
 				$(this).parent().css({'background':'none'});
 			}).click(function(){
 				var num = $(this).parent().children().eq(0).text();
-				location.href = '<%= request.getContextPath()%>/detail.cl?no=' + num;
+				location.href = '<%= request.getContextPath()%>/detail.cl?bNo=' + num;
 			}); 
 		});
 	</script> 

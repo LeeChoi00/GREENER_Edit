@@ -13,8 +13,13 @@
 		<config>src/main/webapp/WEB-INF/spring/appServlet/challenge-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/club-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/recipe-context.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/comment-context.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/report-context.xml</config>
 	</configs>
 	<autoconfigs>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/news-context.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/root-context.xml</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import semi.edit.greener.board.model.vo.BoardPageInfo;
+import semi.edit.greener.board.comment.model.vo.Comment;
 import semi.edit.greener.board.model.vo.Image;
 import semi.edit.greener.board.recipe.model.dao.RecipeDAO;
 import semi.edit.greener.board.recipe.model.vo.Recipe;
@@ -49,4 +50,21 @@ public class RecipeServiceImpl implements RecipeService{
 		}
 		return imgResult;
 	}
+
+	@Override
+	public Recipe selectRecipe(int bNo) {
+		return rpDAO.selectRecipe(sqlSession, bNo);
+	}
+
+	@Override
+	public ArrayList<Image> selectBoardImages(int bNo) {
+		return rpDAO.selectBoardImages(sqlSession, bNo);
+	}
+
+	@Override
+	public ArrayList<Comment> selectBoardComments(int bNo) {
+		return rpDAO.selectBoardComments(sqlSession, bNo);
+	}
+
+
 }

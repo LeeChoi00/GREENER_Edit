@@ -65,7 +65,7 @@ public class ClubController {
 	}
 	
 	@RequestMapping("detail.cl")
-	public String clubDetail(@RequestParam("no") int bNo, Model model) {
+	public String clubDetail(@RequestParam("bNo") int bNo, Model model) {
 		Club club = clService.selectClub(bNo);
 		
 		if(club != null) {
@@ -119,10 +119,11 @@ public class ClubController {
 		int result = clService.updateClub(cl);
 		
 		if(result >0) {
+			model.addAttribute("club", cl);
+			return "redirect:detail.cl?no=" + cl.getBoardNo();
+		} else {
 			model.addAttribute("msg", "게시물 수정에 실패했습니다.");
 			return "../../common/errorPage";
-		} else {
-			return "redirect:detail.cl?no=" + cl.getBoardNo();
 		}
 	}
 		

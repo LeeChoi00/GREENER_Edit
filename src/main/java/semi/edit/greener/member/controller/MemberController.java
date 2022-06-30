@@ -55,7 +55,7 @@ public class MemberController {
 	public String login2(@ModelAttribute Member m, Model model, HttpSession session) {	
 		Member loginUser = mService.login(m);
 		
-		System.out.println("비밀번호 : " + bcrypt.encode(m.getUserPwd()));
+//		System.out.println("비밀번호 : " + bcrypt.encode(m.getUserPwd()));
 		
 		if(loginUser == null) {
 			model.addAttribute("msg", "로그인에 실패했습니다");

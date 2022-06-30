@@ -14,6 +14,8 @@
 		<typeAlias type="semi.edit.greener.board.club.model.vo.Club" alias="Club"/>
 		<typeAlias type="semi.edit.greener.board.news.model.vo.News" alias="News"/>
 		<typeAlias type="semi.edit.greener.board.recipe.model.vo.Recipe" alias="Recipe"/>
+		<typeAlias type="semi.edit.greener.board.comment.model.vo.Comment" alias="Comment"/>
+		<typeAlias type="semi.edit.greener.board.report.model.vo.Report" alias="Report"/>
 	</typeAliases>
 
 	<mappers>
@@ -23,6 +25,8 @@
 		<mapper resource="mappers/club-mapper.xml"/>
 		<mapper resource="mappers/news-mapper.xml"/>
 		<mapper resource="mappers/recipe-mapper.xml"/>
+		<mapper resource="mappers/comment-mapper.xml"/>
+		<mapper resource="mappers/report-mapper.xml"/>
 	</mappers>
 	
 

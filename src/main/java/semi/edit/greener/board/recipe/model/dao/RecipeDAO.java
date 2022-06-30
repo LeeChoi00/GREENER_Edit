@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import semi.edit.greener.board.model.vo.BoardPageInfo;
+import semi.edit.greener.board.comment.model.vo.Comment;
 import semi.edit.greener.board.model.vo.Image;
 import semi.edit.greener.board.recipe.model.vo.Recipe;
 import semi.edit.greener.notice.model.vo.Notice;
@@ -62,6 +63,25 @@ public class RecipeDAO {
 		}		
 		
 		return sum;
+	}
+	
+	// 게시물 상세보기
+	public Recipe selectRecipe(SqlSessionTemplate sqlSession, int bNo) {
+		int cResult = sqlSession.update("recipeMapper.updateCount", bNo);
+		Recipe rpResult = new Recipe();
+		if(cResult >0) {
+			rpResult = sqlSession.selectOne("recipeMapper.selectRecipeBoard", bNo);
+		}
+		
+		return rpResult;
+	}
+
+	public ArrayList<Image> selectBoardImages(SqlSessionTemplate sqlSession, int bNo) {
+		return (ArrayList)sqlSession.selectList("recipeMapper.selectBoardImages", bNo);
+	}
+
+	public ArrayList<Comment> selectBoardComments(SqlSessionTemplate sqlSession, int bNo) {
+		return (ArrayList)sqlSession.selectList("commentMapper.selectBoardComments", bNo);
 	}
 	
 

@@ -31,6 +31,11 @@ public interface ChallengeService {
 	int updateFiles(ArrayList<Image> updateFiles, int bNo);
 
 	int deleteChallenge(int bNo);
+	
+	// 검색
+	int getSearchListCount(String keyword);
+
+	ArrayList<Challenge> searchList(String keyword);
 
 
 

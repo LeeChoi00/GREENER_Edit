@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="board.model.vo.*"%>
+    pageEncoding="UTF-8" import="semi.edit.greener.board.model.vo.*,
+    semi.edit.greener.board.report.model.vo.*"%>
 <%
-	ReportBoard rboard = (ReportBoard)request.getAttribute("rboard");
-	Board board = (Board)request.getAttribute("board");
-	System.out.println("신고 rboard = " + rboard);
+	Report rboard = (Report)request.getAttribute("report");
+	int boardId = (int)request.getAttribute("boardId");
+	/* Board board = (Board)request.getAttribute("board"); */
+	/* System.out.println("신고 rboard = " + rboard); */
 %>
 <!DOCTYPE html>
 <html>
@@ -58,21 +60,21 @@
 				</table>
 				<br>
 				<table align = "center">
-					<%if(board.getBoardId() == 1){ %>  <!-- 챌린지 게시판 -->
+					<%if(boardId == 1){ %>  <!-- 챌린지 게시판 -->
 					<tr>
-						<th><input type="button" class="btn btn-danger btn-lg" onclick='location.href="<%= request.getContextPath()%>/chalDetail.bo?bNo=<%= rboard.getReportBNo()%>"' value="신고 대상 글 보기"></th>
+						<th><input type="button" class="btn btn-danger btn-lg" onclick='location.href="<%= request.getContextPath()%>/detail.ch?bNo=<%= rboard.getReportBNo()%>"' value="신고 대상 글 보기"></th>
 					</tr>
-					<% } else if(board.getBoardId() == 2){ %>    <!-- 클럽 게시판  -->
+					<% } else if(boardId== 2){ %>    <!-- 클럽 게시판  -->
 					<tr>
 						<th><input type="button" class="btn btn-danger btn-lg" onclick='location.href="<%= request.getContextPath()%>/detail.cl?no=<%= rboard.getReportBNo()%>"' value="신고 대상 글 보기"></th>
 					</tr>					
-					<% } else if(board.getBoardId()==3){ %>    <!-- 뉴스 게시판  -->
+					<% } else if(boardId==3){ %>    <!-- 뉴스 게시판  -->
 					<tr>
-						<th><input type="button" class="btn btn-danger btn-lg" onclick='location.href="<%= request.getContextPath()%>/newsdetail.bo?bId=<%= rboard.getReportBNo()%>"' value="신고 대상 글 보기"></th>
+						<th><input type="button" class="btn btn-danger btn-lg" onclick='location.href="<%= request.getContextPath()%>/detail.nw?bNo=<%= rboard.getReportBNo()%>"' value="신고 대상 글 보기"></th>
 					</tr>					
-					<% } else if(board.getBoardId() == 5){ %>	<!-- 레시피 게시판 -->
+					<% } else if(boardId== 5){ %>	<!-- 레시피 게시판 -->
 					<tr>
-						<th><input type="button" class="btn btn-danger btn-lg" onclick='location.href="<%= request.getContextPath()%>/recDetail.bo?bNo=<%= rboard.getReportBNo()%>"' value="신고 대상 글 보기"></th>
+						<th><input type="button" class="btn btn-danger btn-lg" onclick='location.href="<%= request.getContextPath()%>/detail.rp?bNo=<%= rboard.getReportBNo()%>"' value="신고 대상 글 보기"></th>
 					</tr>					
 					<%} %>
 <!-- 					<tr> -->

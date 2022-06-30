@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="reportMapper">
+	<resultMap type="Report" id="reportResultMap">
+	  	<id column="REPORT_NO" property="reportNo"/>
+	  	
+	  	<result column="REPORT_TYPE" property="reportType"/>
+	  	<result column="REPORT_CONTENT" property="reportContent"/>
+	  	<result column="REPORT_DATE" property="reportDate"/>
+	  	<result column="USER_ID" property="reportUser"/>
+	  	<result column="BOARD_NO" property="reportBNo"/>
+	</resultMap>
+
+	<!-- 페이징 -->
+	<!-- 1. report 총 게시물 수 구하기 -->
+	<select id="getListCount" resultType="_int">
+		select count(*)
+		from report_bd
+	</select>
+	
+	<!-- 2. 특정 페이지 게시물 리스트 가져오기 -->
+	<select id="selectRtList" resultMap="reportResultMap">
+		select *
+		from report_bd
+		order by report_date desc
+	</select>
+	
+	<!-- 게시물 상세보기 -->
+	<!-- 1. Report 게시물 정보 가져오기 -->
+	<select id="selectReport" resultMap="reportResultMap">
+		select * 
+		from report_bd
+		where report_no = #{reportNo}
+	</select>
+	
+	<!-- 2. BoardId(게시판 종류) 가져오기 -->
+	<select id="selectBoardId" resultType="_int">
+		select board_id
+		from board
+		where board_no = #{bNo}
+	</select>
+	
+	<!-- 신고 등록 -->
+	<insert id="insertReport">
+		insert into report_bd
+		values(seq_rno.nextval, #{reportType}, #{reportContent}, sysdate, #{reportUser}, #{reportBNo})
+	</insert>
+</mapper>

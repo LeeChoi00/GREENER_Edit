@@ -79,6 +79,17 @@ public class ChallengeServiceImpl implements ChallengeService{
 	public int deleteChallenge(int bNo) {
 		return chDAO.deleteChellenge(sqlSession, bNo);
 	}
+	
+	// 검색
+	@Override
+	public int getSearchListCount(String keyword) {
+		return chDAO.getSearchListCount(sqlSession, keyword);
+	}
+
+	@Override
+	public ArrayList<Challenge> searchList(String keyword) {
+		return chDAO.searchList(sqlSession, keyword);
+	}
 
 
 

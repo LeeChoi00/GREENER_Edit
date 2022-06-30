@@ -63,7 +63,21 @@
 		<servlet-name>noticeServlet</servlet-name>
 		<url-pattern>*.no</url-pattern>
 	</servlet-mapping>
-	
+
+	<!-- Comment(댓글)-->
+	<servlet>
+		<servlet-name>commentServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/comment-context.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>commentServlet</servlet-name>
+		<url-pattern>*.cm</url-pattern>
+	</servlet-mapping>	
+
 	<!-- Challenge 게시판 -->
 	<servlet>
 		<servlet-name>challengeServlet</servlet-name>
@@ -120,6 +134,20 @@
 		<servlet-name>recipeServlet</servlet-name>
 		<url-pattern>*.rp</url-pattern>
 	</servlet-mapping>	
+
+	<!-- Report 게시판 -->
+	<servlet>
+		<servlet-name>reportServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/report-context.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>reportServlet</servlet-name>
+		<url-pattern>*.rt</url-pattern>
+	</servlet-mapping>		
 	
 	<!-- 인코딩 -->
 	<filter>
